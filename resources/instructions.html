@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instructions - Sparx Now</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #050505;
+            --text-color: #ffffff;
+            --text-muted: #a0a0a0;
+            --accent-color: #6366f1;
+            --accent-hover: #4f46e5;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --container-width: 800px;
+            --glass-blur: 15px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Outfit', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            width: 90%;
+            max-width: var(--container-width);
+            margin: 0 auto;
+        }
+
+        /* Background Blobs */
+        .background-blobs {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .blob {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--accent-color) 0%, transparent 70%);
+            opacity: 0.15;
+            filter: blur(80px);
+            border-radius: 50%;
+        }
+
+        .blob-1 { top: -10%; right: -10%; }
+        .blob-2 { bottom: -10%; left: -10%; background: radial-gradient(circle, #ec4899 0%, transparent 70%); }
+        .blob-3 { top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.05; }
+
+        header {
+            padding: 60px 0 30px;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            text-decoration: none;
+            color: white;
+            display: inline-block;
+        }
+
+        .logo span {
+            color: var(--accent-color);
+            position: relative;
+            display: inline-block;
+        }
+
+        .logo span::after {
+            content: '';
+            position: absolute;
+            bottom: 3px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--accent-color);
+            box-shadow: 0 0 20px var(--accent-color);
+            border-radius: 2px;
+        }
+
+        main {
+            flex: 1;
+            padding-bottom: 80px;
+            opacity: 0;
+            animation: fadeIn 0.8s ease forwards;
+            animation-delay: 0.2s;
+        }
+
+        .instruction-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 40px;
+            backdrop-filter: blur(var(--glass-blur));
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .instruction-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, transparent 100%);
+            pointer-events: none;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 30px;
+            transition: color 0.3s ease;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            color: var(--accent-color);
+        }
+
+        h2#title {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        p#description {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        .steps {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        .steps h3 {
+            margin-bottom: 20px;
+            color: var(--accent-color);
+            font-size: 1.25rem;
+        }
+
+        .steps ol {
+            padding-left: 20px;
+            color: #ccc;
+        }
+
+        .steps li {
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .steps li span.highlight {
+            color: white;
+            font-weight: 600;
+        }
+
+        .action-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .download-btn {
+            background: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+
+        .download-btn:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        footer {
+            padding: 40px 0;
+            border-top: 1px solid var(--card-border);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Loading state */
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <header>
+        <div class="container">
+            <a href="/sparx-now" class="logo">Sparx Now <span>Instructions</span></a>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <a href="/sparx-now" class="back-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                Back to Resources
+            </a>
+            
+            <div class="instruction-card" id="content-container">
+                <div class="loading">Loading instructions...</div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Sparx Now. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const instructionsData = {
+            cookie_getter: {
+                title: "Sparx Cookie Getter",
+                description: "This extension is required to securely retrieve your session cookies.",
+                steps: [
+                    "Download the ZIP file by clicking the button below.",
+                    "Extract the ZIP file to a folder on your computer.",
+                    "Open your browser and navigate to the Extensions page (type <span class='highlight'>chrome://extensions/</span> in the URL bar for Chrome/Brave/Edge).",
+                    "Enable <span class='highlight'>Developer mode</span> (usually a toggle in the top right corner).",
+                    "Click <span class='highlight'>Load unpacked</span> and select the folder where you extracted the ZIP file.",
+                    "The extension should now be installed and visible in your extensions bar!"
+                ],
+                buttonText: "Download Extension ZIP",
+                buttonLink: "https://blyatscripts.xyz/app-uploads/Sparx%20Cookie%20Getter.zip",
+                isDownload: true
+            },
+            kiwi_new: {
+                title: "Kiwi Browser (ARM64)",
+                description: "Kiwi Browser allows you to install PC Chrome extensions on your Android device.",
+                steps: [
+                    "Click the download button below to get the APK file.",
+                    "Once downloaded, tap the APK file to install it. If prompted, allow your phone to install apps from 'Unknown Sources'.",
+                    "Open Kiwi Browser.",
+                    "Go to Settings > Extensions in Kiwi Browser, enable Developer mode, and tap '+ (from .zip/.crx/.user.js)' to upload the extension.",
+                    "You can now use the extension on your phone!"
+                ],
+                buttonText: "Download Kiwi Browser APK",
+                buttonLink: "https://github.com/kiwibrowser/src.next/releases/download/14310011181/com.kiwibrowser.browser-arm64-14310011181-github.apk",
+                isDownload: true
+            },
+            kiwi_old: {
+                title: "Kiwi Browser (ARM32)",
+                description: "Kiwi Browser for older Android devices. Allows you to install PC Chrome extensions.",
+                steps: [
+                    "Click the download button below to get the APK file.",
+                    "Once downloaded, tap the APK file to install it. Ensure 'Install from Unknown Sources' is enabled in your Android settings.",
+                    "Open Kiwi Browser.",
+                    "Go to Settings > Extensions, enable Developer mode, and tap '+ (from .zip/.crx)' to select the downloaded extension ZIP.",
+                    "You're all set!"
+                ],
+                buttonText: "Download Kiwi Browser APK",
+                buttonLink: "https://github.com/kiwibrowser/src.next/releases/download/14310011181/com.kiwibrowser.browser-arm-14310011181-github.apk",
+                isDownload: true
+            },
+            orion: {
+                title: "Orion Browser for iOS",
+                description: "Orion Browser natively supports Chrome and Firefox extensions on iOS (iPhone/iPad).",
+                steps: [
+                    "Click the button below to open the App Store page for Orion Browser.",
+                    "Install Orion Browser on your iPhone or iPad.",
+                    "Open Orion Browser.",
+                    "In Orion, go to Settings > Extensions, and install the extension from the downloaded file.",
+                    "Allow the extension necessary permissions to operate."
+                ],
+                buttonText: "Get Orion on App Store",
+                buttonLink: "https://orionbrowser.com/download/appstore",
+                isDownload: false
+            },
+            gemini_api: {
+                title: "Get Gemini API Key",
+                description: "You need a free Google Gemini API key to power certain features of the tools.",
+                steps: [
+                    "Click the button below to go to Google AI Studio.",
+                    "Sign in with your Google account.",
+                    "On the left sidebar, click on <span class='highlight'>Get API key</span>.",
+                    "Click the <span class='highlight'>Create API key</span> button.",
+                    "Select an existing Google Cloud project or create a new one to generate the key.",
+                    "Copy the generated API key.",
+                    "Paste the API key into the extension or tool when prompted. Never share your API key with anyone!"
+                ],
+                buttonText: "Go to Google AI Studio",
+                buttonLink: "https://aistudio.google.com/app/apikey",
+                isDownload: false
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get('id');
+            const container = document.getElementById('content-container');
+
+            if (!id || !instructionsData[id]) {
+                container.innerHTML = `
+                    <h2 id="title">Item Not Found</h2>
+                    <p id="description">Sorry, we couldn't find the instructions for the requested item.</p>
+                `;
+                return;
+            }
+
+            const data = instructionsData[id];
+            
+            const stepsHtml = data.steps.map(step => `<li>${step}</li>`).join('');
+            
+            const iconHtml = data.isDownload 
+                ? '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>'
+                : '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>';
+            
+            const btnAttr = data.isDownload ? 'download' : 'target="_blank" rel="noopener noreferrer"';
+
+            container.innerHTML = `
+                <h2 id="title">${data.title}</h2>
+                <p id="description">${data.description}</p>
+                
+                <div class="steps">
+                    <h3>Instructions</h3>
+                    <ol>
+                        ${stepsHtml}
+                    </ol>
+                </div>
+
+                <div class="action-container">
+                    <a href="${data.buttonLink}" class="download-btn" ${btnAttr}>
+                        ${iconHtml}
+                        ${data.buttonText}
+                    </a>
+                </div>
+            `;
+        });
+    </script>
+</body>
+
+</html>
